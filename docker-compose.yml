@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  web:
+    image: tiangolo/uvicorn-gunicorn-fastapi:python3.8
+    container_name: fastapi-container
+    ports:
+      - "8000:80"
+    volumes:
+      - ./app:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres-container:5432/postgres
+    depends_on:
+      - db
+    build:
+      context: .  # Ensure this points to the directory containing your Dockerfile
+      dockerfile: Dockerfile_python.txt  # Ensure this points to the correct Dockerfile for building the web service
+
+  db:
+    image: postgres:13
+    container_name: postgres-container
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  react:
+    image: node:16  # Using Node.js image to run React build
+    container_name: react-app-container
+    working_dir: /app  # The directory where React app resides inside the container
+    volumes:
+      - ./frontend:/app  # Mount your React app directory to the container
+    command: sh -c "npm install && npm run build"  # Install dependencies and build the React app
+    ports:
+      - "8080:80"  # Expose React app on port 8080 (accessible on localhost:8080)
+    depends_on:
+      - web  # React depends on the FastAPI backend
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-container
+    ports:
+      - "80:80"  # Expose Nginx on port 80
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html  # Serve the React build through Nginx
+    depends_on:
+      - react  # Nginx depends on the React app
+
+volumes:
+  pg-data:  # Named volume for PostgreSQL data
