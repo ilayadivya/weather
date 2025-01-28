@@ -1,0 +1,108 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.dashboard-header {
+  background: #333;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header .logo {
+  font-size: 24px;
+}
+
+.dashboard-header .welcome {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-header button {
+  margin-left: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.hamburger-icon {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.hamburger-icon .bar {
+  width: 30px;
+  height: 4px;
+  background-color: white;
+  margin: 4px 0;
+}
+
+.dashboard-body {
+  display: flex;
+  flex: 1;
+}
+
+.dashboard-sidebar {
+  width: 250px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+}
+
+.dashboard-sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dashboard-sidebar nav ul li {
+  margin-bottom: 10px;
+}
+
+.dashboard-sidebar nav ul li a {
+  color: #333;
+  text-decoration: none;
+}
+
+.dashboard-sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #fff;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+  .hamburger-icon {
+    display: flex; /* Show the hamburger icon on smaller screens */
+  }
+
+  .dashboard-sidebar {
+    width: 200px;
+  }
+
+  .dashboard-sidebar.hidden {
+    transform: translateX(-200px); /* Hide the sidebar when the hamburger icon is clicked */
+  }
+
+  .dashboard-body {
+    flex-direction: column;
+  }
+}
